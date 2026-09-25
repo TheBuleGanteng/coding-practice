@@ -30,3 +30,7 @@ assert second_most_common("") is None
 assert second_most_common("b a") == "b"
 assert second_most_common("x y y z z") == "z"
 print("all tests passed")
+
+
+# Question: What is time complexity in terms of n (number of words)?
+# Answer: The time complexity to run would be O(n + m log m) --> n (need to go through each word) + m log m (sorting each unique word)
