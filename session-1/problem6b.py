@@ -51,7 +51,7 @@ def find_pair(amounts: list, target: int):
     if len(solutions) == 1:
         return solutions[0]
     elif len(solutions) > 1:
-        solutions = sorted(solutions, key=lambda kv:(kv[1], kv[0]))
+        solutions = [min(solutions, key=lambda kv:(kv[1], kv[0]))] # Note that this version uses min instead of sort (used in problem6.py)
         return solutions[0]
     else:
         return None
@@ -63,15 +63,10 @@ def find_pair(amounts: list, target: int):
 #       Each time that outer loop runs, we add that value to the following items. When n=10 and i=0, then we perform 9 checks, when i=1, we perform 8 checks, etc. The average number of checks per pass is n/2
 #       In summary, (n-1)(n/2) --> (n^2 - n)/2 --> O(n^2) 
 #   Sort complexity: 
-#       sort generally: m log m
-#       worst case: n^2 (same calculation used in the looping above)
-#       via substitution, the sort becomes: n^2 log (n^2) 
-#       Bring down the exponent: 2n^2 log (n)
-#       Drop the constants, as is custom with O: n^2 log n
+#       m (just need to find the min)
 #   Total complexity:
-#       loop complexity + sort complexity (both above): n^2 + n^2 log n
-#       Take the biggest term, dropping others: O(n^2 log n)
-    
+#       loop complexity + sort complexity : n^2 + m --> O(n^2) Note how this is smaller than n^2 log n when using sorting (as done in problem6.py)
+#   
 # Test cases
 assert find_pair([500, 1200, 300, 700], 1000) == (2, 3)
 assert find_pair([250, 750, 400, 600], 1000) == (0, 1)
@@ -81,4 +76,5 @@ assert find_pair([100, 200, 300], 1000) is None
 assert find_pair([], 0) is None
 assert find_pair([400, 100, 600, 900], 1000) == (0, 2)
 assert find_pair([300, 300, 700], 1000) == (0, 2)
+assert find_pair([100, 500, 500, 900], 1000) == (1, 2)
 print("all tests passed")
