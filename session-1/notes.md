@@ -1,4 +1,16 @@
 ## Syntax gotchas
+- `break` exits a loop; `continue` skips to the next pass
+- Two ways to find the max in a dict:
+  - **Way 1: max over the keys, compared by their values** (returns the key only)
+```python
+    best_start = max(running_total, key=running_total.get)
+    return best_start, running_total[best_start]
+```
+  - **Way 2: max over (key, value) pairs** (returns the whole pair)
+```python
+    best_window = max(running_total.items(), key=lambda kv: (kv[1], -kv[0]))
+    return best_window
+```
 
 ## Costs
 
