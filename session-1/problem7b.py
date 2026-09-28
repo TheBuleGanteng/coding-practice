@@ -26,27 +26,33 @@ def find_pair(amounts: list, target: int):
     
     for i in range(len(amounts)): 
         
-        # Get position (i) value at that position (value_i), and the remainder (remainder)
+        # Get the value at amounts[i], (called value_i), and the remainder (called remainder)
         value_i = amounts[i]
         remainder = target - value_i
         print(f'i:{i}, value_i: {value_i}, reminder: {remainder}')
 
-        # Look in the dict to see if the remainder is already in there as a key. If so, retrieve the corresponding position.
+        # Look in the dict to see if the remainder is already in there as a key. If so, retrieve the corresponding position (stored as a value).
         remainder_position = new_dict.get(remainder, None)
 
-        # Add to new_dict w/ key=value_i and value=i
-        new_dict[value_i] = new_dict.get(value_i, i)
-        print(f'new_dict updated to: {new_dict}')
-        
-        # If there is a remainder position already registered, rearrange i and j to ensure i < j (per requirements)
+        # If the required remainder is already in the dict, rearrange i and j to ensure i < j (per requirements)
         if remainder_position is not None:
             solution = (min(i, remainder_position), max(i, remainder_position))
             print(f'solution: {solution}')
             return (solution)
+        
+        # If the remainder corresponding to value_i isn't already in the dict, add value_i 
+        else:
+            # Add to new_dict the following:
+            # (a) key=amounts[i] (value_i)
+            # (b) value=i (position of i)
+            # Note that this first checks if there is already a key in the dict with the same value as value_i. 
+            # If there IS already a key = value_i, it retrieves the value for new_dict[value_i], which is the position in amounts at which value_i was previously encountered and re-saves that position (nothing changes)
+            # If there IS NOT yet a key = value_i, it adds value_i:i to the dict
+            new_dict[value_i] = new_dict.get(value_i, i) 
+            print(f'new_dict updated to: {new_dict}')
     
     # Return None if no pairs identified
     return None
-
 
 '''
 Complexity:

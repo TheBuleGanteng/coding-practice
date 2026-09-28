@@ -43,9 +43,7 @@ def busiest_window(counts: list, k: int):
 # Complexity:
 # 1. Initial check: O(1)
 # 2. First loop: O(n)
-# 3. Check inside loop passes this many times: n - k + 1 (the +1 is due to the fact that the current position is included in any given sum, so ending position is i+k-1)
-# 4. Summing inside EACH loop: O(k) 
-# Total= O(1) + O(n) + (n-k-1) * O(k) --> O(n) + O(nk-k^2-k) --> Worst case is a small k, relative to n --> 
+# 3. Inside that loop, k work is done
 
 # Test cases
 assert busiest_window([1, 3, 2, 5, 1, 1], 2) == (2, 7)
