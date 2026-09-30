@@ -73,6 +73,12 @@
 - Design the core formulas on a middle-of-the-list example first; then do a boundary pass: plug 0, the last index, empty, and single-item inputs into every index expression. Each break → a guard (or a sentinel like `{-1: 0}`).
 
 
+## Writing tests for derived solution
+- Quick five: empty, single item, everything fits, nothing fits, best answer at position 0.
+- Then: exact-boundary value (= limit), ties, answer at the end.
+- For every `x-1` / `x+1` index in my code: a test that makes x = 0 or the last position.
+- Work out expected answers by hand BEFORE running.
+
 ## Worked examples (things I'm still getting comfortable with)
 
 ### Simulating on paper (one line per step)
