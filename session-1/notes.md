@@ -68,6 +68,7 @@
 - Before switching approach, write one line saying why the current one fails.
 - For every loop: how can it end, and what must happen in each case?
 - Check every comparison against the spec's wording (≤ vs <).
+- Design the core formulas on a middle-of-the-list example first; then do a boundary pass: plug 0, the last index, empty, and single-item inputs into every index expression. Each break → a guard (or a sentinel like `{-1: 0}`).
 
 
 ## Worked examples (things I'm still getting comfortable with)
@@ -116,3 +117,55 @@ lst.sort()          # changes lst, returns None
 new = sorted(lst)   # leaves lst alone, returns a new sorted list
 x = lst.pop(0)      # removes first item from lst AND gives it to you as x
 ```
+
+
+## Prototypical problems and key steps
+
+### Variable-size sliding window with a budget: find the max length (Problem 11b; reused for Problem 13)
+Find the longest run of consecutive items whose total is ≤ budget.
+Return (start, length); ties → earliest start.
+
+```python
+# 1. Initial guards
+if len(readings) == 0:
+    return None
+
+# 2. Loop over readings
+for i, obs in enumerate(readings):
+
+    # 3. Guard against running_tot[-1] (first pass has no prior total)
+    if i == 0:
+        running_tot[i] = obs
+        start = 0
+    else:
+        running_tot[i] = running_tot[i-1] + obs
+
+    # 4. Guard against start-1 = -1 (nothing before position 0)
+    if start == 0:
+        stretch_tot = running_tot[i] - 0
+    else:
+        stretch_tot = running_tot[i] - running_tot[start-1]   # total JUST BEFORE start
+
+    # 5. Check against budget
+    if stretch_tot <= budget:
+        # 6. Happy path: update solutions for this start
+        solutions[start] = i - start + 1
+    else:
+        # 7. Unhappy path: while loop shrinks the window by moving start closer to the end (i)
+        while stretch_tot > budget:
+            start += 1
+            stretch_tot = running_tot[i] - running_tot[start-1]
+        solutions[start] = i - start + 1
+
+# 8. Find the best solution from the solutions dict
+solution = max(solutions.items(), key=lambda kv: (kv[1], -kv[0]))
+
+# Added from Problem 13: if the best length is 0, nothing qualified
+if solution[1] == 0:
+    return None
+return solution
+```
+
+**Complexity:** O(n). The `for` loop moves the end forward n times; `start` only moves forward, so the `while` totals at most n steps across the whole run; `max` is O(n).
+
+**Adapting it:** for Problem 13, convert each status to a number first (`"ERR"` → 1, `"OK"` → 0), then the same steps apply with `max_errors` as the budget.
