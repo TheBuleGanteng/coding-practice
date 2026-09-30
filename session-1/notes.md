@@ -16,6 +16,8 @@
 - `lst.append(x)` adds `x` as ONE item to the list; appending a list to a list creates nested lists: `[[...]]`.
 - Don't name variables `len`, `max`, `min`, `list`, `dict`, `sum` (shadows built-ins, breaks the whole function).
 - `while cond:` rechecks `cond` before every pass. Something inside must change it.
+- IF keys are 0..n-1 in order → use a list. IF keys are strings, sparse, or unordered → use a dict.
+  - Caution: `lst[-1]` is the LAST item (no error); `d[-1]` raises KeyError. Guards like `start == 0` matter more with lists.
 
 
 ## Costs
@@ -118,6 +120,24 @@ new = sorted(lst)   # leaves lst alone, returns a new sorted list
 x = lst.pop(0)      # removes first item from lst AND gives it to you as x
 ```
 
+### Unpack tuples directly in the loop header instead of indexing inside the loop:
+```python
+  uploads = [("ann", 40), ("bob", 10)]
+
+  # Instead of:
+  for i, upload in enumerate(uploads):
+      size = upload[1]
+
+  # Write:
+  for i, (user, size) in enumerate(uploads):
+      ...   # user = "ann", size = 40 on the first pass
+
+  # Without enumerate (no index needed):
+  for user, size in uploads:
+      ...
+```
+  - With `enumerate`, the parentheses around `(user, size)` are required: `enumerate` gives `(i, item)`, and `item` is itself a tuple.
+  - Unused parts can be named `_` by convention: `for i, (_, size) in enumerate(uploads):`
 
 ## Prototypical problems and key steps
 
