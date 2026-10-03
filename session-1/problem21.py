@@ -1,3 +1,4 @@
+# type: ignore
 '''
 Problem 21: Longest frugal streak
 
@@ -20,7 +21,6 @@ Requirements:
 3. If no streak of at least one day qualifies, return None.
 '''
 '''
-
 solutions --> k= start, v=length
 best_solution = max(solutions.items(), key=lambda kv:[kv[1], -kv[0]])
 

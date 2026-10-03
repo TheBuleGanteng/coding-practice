@@ -1,3 +1,4 @@
+# type: ignore
 '''
 Problem 11c: Longest quiet stretch, efficient version
 
@@ -21,7 +22,7 @@ def longest_quiet_stretch(counts: list, budget: int):
     running_tot = {} # Dict w/ key=position, value=cumulative total from [0] until that position
     stretches = {} # Dict w/ key =start, value= length of that run
     
-    # Guards
+    # Inital guards
     if len(counts) == 0 or min(counts) > budget:
         return None
     
@@ -36,7 +37,8 @@ def longest_quiet_stretch(counts: list, budget: int):
         # If not first entry, running total = prior running total + current value
         else:
             running_tot[i] = running_tot[i-1] + count
-            
+        
+        # Guard against start = [0] --> start-1 = [-1] 
         if start == 0:
             stretch_tot = running_tot[i] - 0
         else:

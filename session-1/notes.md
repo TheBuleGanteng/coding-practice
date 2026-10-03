@@ -145,6 +145,57 @@ x = lst.pop(0)      # removes first item from lst AND gives it to you as x
   - With `enumerate`, the parentheses around `(user, size)` are required: `enumerate` gives `(i, item)`, and `item` is itself a tuple.
   - Unused parts can be named `_` by convention: `for i, (_, size) in enumerate(uploads):`
 
+### List comprehension: build a filtered list in one line
+A list comprehension does exactly what a short `for` loop does; it's just written more compactly. Both are O(n).
+
+**Loop version:**
+```python
+prices = {"apple": 5, "banana": 0, "cherry": 3}
+
+result = []                          # 1. start with an empty list
+for k, v in prices.items():          # 2. go through each (key, value) pair
+    if v > 0:                        # 3. keep only pairs whose value is above 0
+        result.append((k, v))        # 4. add the kept pair to the list
+# result is [("apple", 5), ("cherry", 3)]
+```
+
+**List comprehension version:**
+```python
+result = [(k, v) for k, v in prices.items() if v > 0]
+```
+
+| Part | Meaning | Matches loop step |
+|---|---|---|
+| `[` ... `]` (outer brackets) | build a new list | 1 |
+| `for k, v in prices.items()` | what to loop over | 2 |
+| `if v > 0` | which items to keep (optional) | 3 |
+| `(k, v)` | what to put in the new list | 4 |
+
+**Used in Session 2, Problem 1 (Inventory):**
+```python
+return sorted([(item, qty) for item, qty in self.stock.items() if qty > 0])
+```
+- The comprehension already produces a **list**, so don't call `.items()` on it; `.items()` is a dict method.
+- `sorted()` on `(item, qty)` tuples sorts by the first element (the item name) by default.
+
+**Dict comprehension (same idea, builds a dict):** curly braces and `key: value`:
+```python
+in_stock_dict = {item: qty for item, qty in prices.items() if qty > 0}
+# {"apple": 5, "cherry": 3}
+```
+| | List comprehension | Dict comprehension |
+|---|---|---|
+| Outer brackets | `[ ]` → builds a list | `{ }` → builds a dict |
+| What's added each pass | `(item, qty)`, one tuple | `item: qty`, one key and its value |
+
+Loop version of the dict comprehension:
+```python
+in_stock_dict = {}                   # 1. start with an empty dict
+for item, qty in prices.items():     # 2. go through each (key, value) pair
+    if qty > 0:                      # 3. keep only pairs whose value is above 0
+        in_stock_dict[item] = qty    # 4. add the key and its value to the dict
+```
+
 ## Prototypical problems and key steps
 
 ### Variable-size sliding window with a budget: find the max length (Problem 11b; reused for Problem 13)

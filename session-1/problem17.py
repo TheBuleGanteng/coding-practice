@@ -1,3 +1,4 @@
+# type: ignore
 '''
 Problem 17: Longest affordable span
 
@@ -83,6 +84,7 @@ def longest_affordable_span(prices: list, budget: int):
 #2. While only moves forward, so additive --> O(n)
 #3. max --> O(n)
 # Total --> O(3n) --> O(n) w/ memory O(n)
+
 # Test cases
 p = [4, 2, 1, 7, 1, 1, 3]
 assert longest_affordable_span(p, 6) == (4, 6)

@@ -1,3 +1,4 @@
+# type: ignore
 '''
 Problem 13: Longest tolerant stretch
 
