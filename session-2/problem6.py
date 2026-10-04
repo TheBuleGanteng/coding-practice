@@ -1,90 +1,90 @@
 '''
-Session 2, Problem 5: Library
+Session 2, Problem 6: TaskList
 
 Time limit: 25 minutes, including writing your own tests. Aim for working code by about minute 20. Hard stop at 37 minutes.
 
-Write a class that tracks how many copies of each book a library has on the shelf.
+Write a class that keeps track of tasks and their priorities. A lower priority number means a more urgent task.
 
-Class name: Library
+Class name: TaskList
 
-Creating a Library() takes no arguments, and a new library starts with no books.
+Creating a TaskList() takes no arguments, and a new task list starts with no tasks.
 
 Methods:
 
-1. add_copies(title, copies): title is a string, copies is a positive int. 
-Adds copies copies of that title to the shelf; the title may or may not already be in the library. 
-Returns the number of copies of that title now on the shelf, as an int.
-2. checkout(title): title is a string. 
-If at least one copy of that title is on the shelf, removes one copy and returns True. 
-Otherwise returns False, including when the title isn't in the library.
-3. remove_title(title): title is a string. 
-Removes the title from the library entirely and returns the number of copies it had on the shelf, as an int. 
-Returns None if the title isn't in the library.
-4. titles(): no arguments. 
-Returns a list of all titles with at least one copy on the shelf, sorted alphabetically.
+1. add_task(name, priority): name is a string, priority is an int. Adds a task with that priority. 
+Returns True if the task was added, or False if a task with that name already exists (its priority is left unchanged).
+2. change_priority(name, priority): name is a string, priority is an int. 
+Sets the task's priority to the new value and returns its old priority, as an int. 
+Returns None if there is no task with that name.
+3. complete(name): name is a string. 
+Removes the task from the list and returns its priority, as an int. Returns None if there is no task with that name.
+4. next_task(): no arguments. 
+Returns the name of the most urgent task. If tasks tie for most urgent, returns the name that comes first alphabetically. Returns None if there are no tasks.
 '''
 
-class Library:
+class TaskList:
     
     def __init__(self):
         self.records: dict[str, int] = {}
         
-    def add_copies(self, title: str, copies: int):
-        copies = self.records.get(title, 0) + copies
-        self.records[title] = copies
-        return self.records[title]
-         
-    def checkout(self, title):
-        copies = self.records.get(title, 0) - 1
-        if copies < 0:
+    def add_task(self, name: str, priority: int):
+        task_data = self.records.get(name, None)
+        if task_data is not None:
             return False
-        self.records[title] -= 1
+        self.records[name] = priority
         return True
-    
-    def remove_title(self, title):
-        copies = self.records.get(title, None)
-        print(f'title: {title}, copies: {copies}')
-        if copies is None:
+
+    def change_priority(self, name: str, priority: int):
+        task_data = self.records.get(name, None)
+        if task_data is None:
             return None
-        del(self.records[title])
-        return copies
+        self.records[name] = priority
+        print(f'name: {name}, self.records[name]: {self.records[name]}')
+        return task_data
+
+    def complete(self, name: str):
+        task_data = self.records.get(name, None)
+        if task_data is None:
+            return None
+        del(self.records[name])
+        return task_data
     
-    def titles(self):
-        print(f'self.records.items(): {self.records.items()}')
-        print(f'titles() returning: {sorted(names for names, copies in self.records.items() if copies > 0)}')
-        return sorted(names for names, copies in self.records.items() if copies > 0)
-
+    def next_task(self):
+        if len(self.records.items()) == 0:
+            return None
+        most_urgent = min(self.records.items(), key= lambda kv:(kv[1], kv[0]))
+        print(f'most_urgent: {most_urgent}')
+        return most_urgent[0]
+        
 # Complexity:
-# 1. add_copies: O(1)
-# 2. checkout: O(1)
-# 3. remove_title: O(1)
-# 4. titles: loop O(m) + sort a list O(m log m) where m = titles --> O(m + m log m) --> O(m log m)
-# Worst case compleixty: O(m) w/ memory O(m)        
-
-
+# 1. add_task: O(1)
+# 2. change_priority: O(1)
+# 3. complete: O(1)
+# 3. Min O(m)
+# Worst case O(m) w/ memory of O(m)
+        
 # Example tests:
 
-library = Library()
+tasks = TaskList()
+assert tasks.add_task("email", 2) is True
+assert tasks.add_task("clean", 2) is True
+assert tasks.add_task("email", 2) is False
 
-assert library.add_copies("dune", 2) == 2
-assert library.add_copies("dune", 2) == 4
-assert library.add_copies("all", 2) == 2
+assert tasks.change_priority('email', 3) == 2
+assert tasks.change_priority('email', 2) == 3
+assert tasks.change_priority('not included', 2) is None
 
-assert library.checkout('dune') is True
-assert library.checkout('none') is False
-assert library.add_copies("none", 2) == 2
-assert library.checkout('none') is True
-assert library.checkout('none') is True
+assert tasks.complete('email') == 2
+assert tasks.complete('not included') is None
 
-assert library.remove_title('dune') == 3
-assert library.remove_title('none') == 0
-assert library.remove_title('not in') is None
+assert tasks.add_task("email", 1) is True
+assert tasks.next_task() == 'email'
 
-assert library.add_copies("dune", 2) == 2
-assert library.add_copies("none", 2) == 2
-assert library.titles() == ['all', 'dune', 'none']
+assert tasks.complete("not included") is None
+assert tasks.change_priority("clean", 1) == 2
+assert tasks.next_task() == 'clean'
 
-library2 = Library()
-assert library2.titles() == []
+tasks2 = TaskList()
+assert tasks2.next_task() is None
 
 print('all tests pass')
