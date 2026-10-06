@@ -18,7 +18,10 @@
 - `while cond:` rechecks `cond` before every pass. Something inside must change it.
 - IF keys are 0..n-1 in order → use a list. IF keys are strings, sparse, or unordered → use a dict.
   - Caution: `lst[-1]` is the LAST item (no error); `d[-1]` raises KeyError. Guards like `start == 0` matter more with lists.
-
+- {x} = set containing x; set("dune") = set of letters; {} = empty DICT → use set()
+- min/max return ONE item; sorted returns a LIST of all items
+- [... for ...] = list; (... for ...) = generator, not a list
+- d[k] raises KeyError if k is missing → use d.get(k) when k may not exist
 
 ## Costs
 
