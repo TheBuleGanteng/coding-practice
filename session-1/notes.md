@@ -22,6 +22,7 @@
 - min/max return ONE item; sorted returns a LIST of all items
 - [... for ...] = list; (... for ...) = generator, not a list
 - d[k] raises KeyError if k is missing → use d.get(k) when k may not exist
+- d[a][b] = x only assigns the LAST bracket; d[a] is a lookup → create d[a] = {} first if missing
 
 ## Costs
 
