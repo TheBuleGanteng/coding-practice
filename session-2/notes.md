@@ -45,6 +45,7 @@
 | `str.split()`, `str.lower()` | O(length of string) | Touches every character |
 | `for x in ...` over n items | O(n) | Times whatever the body costs |
 | `while cond:` | passes × cost per pass | If the loop only moves a pointer forward (never resets), total passes ≤ n across the whole run → O(n) total, even inside another loop |
+- Loop cost = sum of each pass's cost. Same cost every pass → multiply (passes × cost). Cost varies per pass → add them up; the sum is usually a named total (e.g. all employees' changes = h).
 
 ### Combining rules
 - Steps one after another → **add** the costs.
@@ -68,6 +69,13 @@
 | Prefix sums | "many range queries", "total between X and Y" | Running totals once; range = `total[end] - total[start-1]` | O(n + q) | Problem 10b |
 | Variable-size sliding window (two pointers) | "longest/shortest consecutive stretch where total ≤ / ≥ X" | Move the end `i` closer to the end one step at a time; As long as the window breaks the rule, use `while` to move `start` (the beginning of the window) closer to the end (closer to i), shrinking the window; record once the `while` stops running (when total is no longer violated) | O(n) | Problem 11b |
 
+### Handing various data structures
+| Structure (as in `__init__`) | Create first entry | Update | Get the whole value for k | Get or check one item inside it |
+|---|---|---|---|---|
+| `dict[str, int]` | `d[k] = 0` | `d[k] += x` | `d.get(k, None)` | n/a (nothing inside) |
+| `dict[str, set]` | `d[k] = {x}` (or `set()` if empty; never `set(x)` for a string) | `d[k].add(x)` / `d[k].remove(x)` | `d.get(k, set())` | `x in d.get(k, set())` |
+| `dict[str, list]` | `d[k] = [x]` (or `[]`) | `d[k].append(x)` | `d.get(k, [])` | `x in d.get(k, [])` |
+| `dict[str, dict]` | `d[k] = {a: b}` (or `{}`) | `d[k][a] = b` (`d[k]` must already exist) | `d.get(k, {})` | `d.get(k, {}).get(a, None)` |
 
 ## Process
 - New pattern and no idea after 10–15 min → ask for the concept only, then implement.
