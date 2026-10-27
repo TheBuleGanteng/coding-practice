@@ -134,7 +134,6 @@ class LendingLibrary:
 
 #Example tests:
 
-
 library = LendingLibrary()
 assert library.add_copies("dune", 1) == 1
 assert library.borrow("ann", "dune") is True

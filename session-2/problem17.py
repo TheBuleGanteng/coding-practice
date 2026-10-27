@@ -42,6 +42,7 @@ class PriceHistory:
         # If the product is in records, check if there is a price at timestamp
         if product_data is not None:
             result = None
+            # This loop stopps running at the last {prod_timestamp:prod_price} before we cross the threshold set by the timestamp argument
             for prod_timestamp, prod_price in product_data.items():
                 if prod_timestamp > timestamp:
                     break                  # everything after this is later too
